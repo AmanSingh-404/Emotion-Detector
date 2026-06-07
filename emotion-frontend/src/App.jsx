@@ -56,7 +56,7 @@ function App() {
     setEmotion("");
 
     // Support dynamic backend URL from environment variables, fallback to production Render service
-    const API_BASE = import.meta.env.VITE_API_URL || "https://emotion-detector.onrender.com";
+    const API_BASE = import.meta.env.VITE_API_URL || "https://emotion-detector-isbm.onrender.com";
 
     try {
       const res = await axios.post(
