@@ -1,16 +1,17 @@
 from flask import Flask, request, jsonify
 import pickle
 from flask_cors import CORS
-
-
-
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-model = pickle.load(open("emotion_model.pkl", "rb"))
-vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
-emotion_mapping = pickle.load(open("emotion_mapping.pkl", "rb"))
+# Dynamically resolve file paths relative to script location
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+model = pickle.load(open(os.path.join(BASE_DIR, "emotion_model.pkl"), "rb"))
+vectorizer = pickle.load(open(os.path.join(BASE_DIR, "vectorizer.pkl"), "rb"))
+emotion_mapping = pickle.load(open(os.path.join(BASE_DIR, "emotion_mapping.pkl"), "rb"))
 
 reverse_mapping = {v:k for k,v in emotion_mapping.items()}
 
@@ -31,4 +32,6 @@ def predict():
     })
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Support dynamic PORT environment binding for cloud platforms
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)

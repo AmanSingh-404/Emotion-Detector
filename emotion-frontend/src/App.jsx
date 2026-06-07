@@ -55,9 +55,12 @@ function App() {
     setError(null);
     setEmotion("");
 
+    // Support dynamic backend URL from environment variables, fallback to local Flask
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
     try {
       const res = await axios.post(
-        "http://localhost:5000/predict",
+        `${API_BASE}/predict`,
         { text }
       );
 
