@@ -55,8 +55,8 @@ function App() {
     setError(null);
     setEmotion("");
 
-    // Support dynamic backend URL from environment variables, fallback to local Flask
-    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    // Support dynamic backend URL from environment variables, fallback to production Render service
+    const API_BASE = import.meta.env.VITE_API_URL || "https://emotion-detector.onrender.com";
 
     try {
       const res = await axios.post(
@@ -75,7 +75,7 @@ function App() {
       console.error("Prediction failed:", err);
       setError({
         title: "Unable to reach backend API",
-        message: "Could not connect to the Flask server at http://localhost:5000. Please ensure 'python app.py' is running and CORS is allowed."
+        message: `Could not connect to the server at ${API_BASE}. Please ensure the service is online and CORS is allowed.`
       });
     } finally {
       setIsLoading(false);
